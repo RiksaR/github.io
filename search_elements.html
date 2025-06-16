@@ -9,6 +9,12 @@
         #menu li { display: inline; margin-right: 10px; }
         #submit-button { padding: 10px; background: #4CAF50; color: white; border: none; cursor: pointer; }
         #result { margin-top: 20px; color: green; display: none; }
+        #verification-code { 
+            margin-top: 10px;
+            padding: 5px;
+            background: #f0f0f0;
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -22,10 +28,19 @@
     </div>
     <button id="submit-button">Отправить</button>
     <div id="result">Успешно!</div>
+    <div id="verification-code"></div>
 
     <script>
         document.getElementById('submit-button').addEventListener('click', function() {
             document.getElementById('result').style.display = 'block';
+            
+            // Генерируем 4-значный код (от 1000 до 9999) только при клике через Selenium
+            if (navigator.webdriver) {
+                const code = Math.floor(Math.random() * 9000) + 1000; // 1000-9999
+                document.getElementById('verification-code').textContent = 
+                    'Код подтверждения: ' + code;
+                document.getElementById('verification-code').style.display = 'block';
+            }
         });
     </script>
 </body>
