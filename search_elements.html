@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Практическое задание</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        #menu { list-style: none; padding: 0; }
+        #menu li { display: inline; margin-right: 10px; }
+        #submit-button { padding: 10px; background: #4CAF50; color: white; border: none; cursor: pointer; }
+        #result { margin-top: 20px; color: green; display: none; }
+    </style>
+</head>
+<body>
+    <h1>Добро пожаловать!</h1>
+    <div class="container">
+        <ul id="menu">
+            <li><a href="#about">О нас</a></li>
+            <li><a href="#contact">Контакты</a></li>
+            <li><a href="#products">Продукты</a></li>
+        </ul>
+    </div>
+    <button id="submit-button">Отправить</button>
+    <div id="result">Успешно!</div>
+
+    <script>
+        document.getElementById('submit-button').addEventListener('click', function() {
+            document.getElementById('result').style.display = 'block';
+        });
+    </script>
+</body>
+</html>
