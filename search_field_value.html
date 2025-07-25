@@ -81,8 +81,7 @@
         <div class="form-group">
             <button type="button" id="submitBtn" disabled>Submit</button>
         </div>
-        
-        <!-- Это поле будет скрыто до клика -->
+
         <div id="answerGroup" class="hidden">
             <div class="form-group">
                 <label for="answer">Ответ:</label>
@@ -94,26 +93,17 @@
     </form>
 
     <script>
-        // Активируем кнопку через 1 секунду
         setTimeout(() => {
             document.getElementById('submitBtn').disabled = false;
             document.getElementById('verification-result').textContent = 'Кнопка теперь активна!';
             document.getElementById('verification-result').classList.remove('hidden');
         }, 1000);
 
-        // Обработчик клика для кнопки
         document.getElementById('submitBtn').addEventListener('click', function() {
             const verificationResult = document.getElementById('verification-result');
-            
-            // Проверяем, выполняется ли код в автоматизированном тесте
             if (navigator.webdriver) {
-                // Генерируем случайное число от 10 до 100
                 const randomNumber = Math.floor(Math.random() * 91) + 10;
-                
-                // Показываем всю группу с ответом
                 document.getElementById('answerGroup').classList.remove('hidden');
-                
-                // Заполняем поле
                 document.getElementById('answer').value = randomNumber;
                 verificationResult.textContent = 'Обнаружен Selenium! Число сгенерировано: ' + randomNumber;
             } else {
