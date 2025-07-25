@@ -38,6 +38,11 @@
         .hidden {
             display: none;
         }
+        #verification-result {
+            color: green;
+            font-weight: bold;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
@@ -81,20 +86,24 @@
             <label for="answer">Ответ:</label>
             <input type="text" id="answer" name="answer" readonly>
         </div>
+        
+        <div id="verification-result" class="hidden"></div>
     </form>
 
     <script>
         // Активируем кнопку через 1 секунду
         setTimeout(() => {
             document.getElementById('submitBtn').disabled = false;
+            document.getElementById('verification-result').textContent = 'Кнопка теперь активна!';
+            document.getElementById('verification-result').classList.remove('hidden');
         }, 1000);
 
         // Обработчик клика для кнопки
-        document.getElementById('submitBtn').addEventListener('click', function(event) {
-            // Проверяем, был ли клик инициирован Selenium
-            const isAutomated = event.isTrusted === false;
+        document.getElementById('submitBtn').addEventListener('click', function() {
+            const verificationResult = document.getElementById('verification-result');
             
-            if (isAutomated) {
+            // Проверяем, выполняется ли код в автоматизированном тесте
+            if (navigator.webdriver) {
                 // Генерируем случайное число от 10 до 100
                 const randomNumber = Math.floor(Math.random() * 91) + 10;
                 
@@ -103,7 +112,12 @@
                 answerGroup.classList.remove('hidden');
                 
                 document.getElementById('answer').value = randomNumber;
+                verificationResult.textContent = 'Обнаружен Selenium! Число сгенерировано: ' + randomNumber;
+            } else {
+                verificationResult.textContent = 'Пожалуйста, используйте автоматизированные тесты для проверки этой страницы';
             }
+            
+            verificationResult.classList.remove('hidden');
         });
     </script>
 </body>
