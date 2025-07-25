@@ -82,9 +82,12 @@
             <button type="button" id="submitBtn" disabled>Submit</button>
         </div>
         
-        <div class="form-group hidden" id="answerGroup">
-            <label for="answer">Ответ:</label>
-            <input type="text" id="answer" name="answer" readonly>
+        <!-- Это поле будет скрыто до клика -->
+        <div id="answerGroup" class="hidden">
+            <div class="form-group">
+                <label for="answer">Ответ:</label>
+                <input type="text" id="answer" name="answer" readonly>
+            </div>
         </div>
         
         <div id="verification-result" class="hidden"></div>
@@ -107,10 +110,10 @@
                 // Генерируем случайное число от 10 до 100
                 const randomNumber = Math.floor(Math.random() * 91) + 10;
                 
-                // Показываем поле с ответом и заполняем его
-                const answerGroup = document.getElementById('answerGroup');
-                answerGroup.classList.remove('hidden');
+                // Показываем всю группу с ответом
+                document.getElementById('answerGroup').classList.remove('hidden');
                 
+                // Заполняем поле
                 document.getElementById('answer').value = randomNumber;
                 verificationResult.textContent = 'Обнаружен Selenium! Число сгенерировано: ' + randomNumber;
             } else {
