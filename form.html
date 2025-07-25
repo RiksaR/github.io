@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Форма регистрации с задержкой</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Форма регистрации</h1>
+    <form id="registrationForm">
+        <div class="form-group">
+            <label for="username">Имя пользователя:</label>
+            <input type="text" id="username" name="username" placeholder="Введите ваше имя">
+        </div>
+        
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" placeholder="Введите ваш email">
+        </div>
+        
+        <div class="form-group">
+            <label for="password">Пароль:</label>
+            <input type="password" id="password" name="password" placeholder="Придумайте пароль">
+        </div>
+        
+        <div class="form-group">
+            <label for="country">Страна:</label>
+            <select id="country" name="country">
+                <option value="" disabled selected>Выберите страну</option>
+                <option value="ru">Россия</option>
+                <option value="us">США</option>
+                <option value="eu">Европа</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="age">Возраст:</label>
+            <input type="number" id="age" name="age" placeholder="Укажите ваш возраст">
+        </div>
+        
+        <div class="form-group">
+            <button type="button" id="submitBtn" disabled>Submit</button>
+        </div>
+        
+        <div class="form-group hidden" id="answerGroup">
+            <label for="answer">Ответ:</label>
+            <input type="text" id="answer" name="answer" readonly>
+        </div>
+    </form>
+
+    <script>
+        // Активируем кнопку через 1 секунду
+        setTimeout(() => {
+            document.getElementById('submitBtn').disabled = false;
+        }, 1000);
+
+        // Обработчик клика для кнопки
+        document.getElementById('submitBtn').addEventListener('click', function(event) {
+            // Проверяем, был ли клик инициирован Selenium
+            const isAutomated = event.isTrusted === false;
+            
+            if (isAutomated) {
+                // Генерируем случайное число от 10 до 100
+                const randomNumber = Math.floor(Math.random() * 91) + 10;
+                
+                // Показываем поле с ответом и заполняем его
+                const answerGroup = document.getElementById('answerGroup');
+                answerGroup.classList.remove('hidden');
+                
+                document.getElementById('answer').value = randomNumber;
+            }
+        });
+    </script>
+</body>
+</html>
