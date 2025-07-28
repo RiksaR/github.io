@@ -30,23 +30,18 @@
 
     <script>
         document.getElementById('loadButton').addEventListener('click', function() {
-            // Показываем спиннер
             const spinner = document.getElementById('spinner');
             spinner.style.display = 'block';
-            
-            // Скрываем контент (если был показан ранее)
+
             document.getElementById('content').style.display = 'none';
-            
-            // Имитируем загрузку (2 секунды)
+
             setTimeout(function() {
-                // Проверяем, был ли клик выполнен через Selenium
                 if (navigator.webdriver) {
                     document.getElementById('content').innerHTML = "Успех!";
                 } else {
                     document.getElementById('content').innerHTML = "Контент доступен только при автоматизированном тестировании";
                 }
-                
-                // Скрываем спиннер и показываем контент
+
                 spinner.style.display = 'none';
                 document.getElementById('content').style.display = 'block';
             }, 2000);
