@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Content Test</title>
+    <style>
+        #content {
+            margin-top: 20px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            display: none;
+        }
+        #spinner {
+            display: none;
+            margin: 20px 0;
+            font-size: 24px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Тест динамического контента</h1>
+    <button id="loadButton">Load content</button>
+    <div id="spinner">Загрузка...</div>
+    <div id="content"></div>
+
+    <script>
+        document.getElementById('loadButton').addEventListener('click', function() {
+            // Показываем спиннер
+            const spinner = document.getElementById('spinner');
+            spinner.style.display = 'block';
+            
+            // Скрываем контент (если был показан ранее)
+            document.getElementById('content').style.display = 'none';
+            
+            // Имитируем загрузку (2 секунды)
+            setTimeout(function() {
+                // Проверяем, был ли клик выполнен через Selenium
+                if (navigator.webdriver) {
+                    document.getElementById('content').innerHTML = "Успех!";
+                } else {
+                    document.getElementById('content').innerHTML = "Контент доступен только при автоматизированном тестировании";
+                }
+                
+                // Скрываем спиннер и показываем контент
+                spinner.style.display = 'none';
+                document.getElementById('content').style.display = 'block';
+            }, 2000);
+        });
+    </script>
+</body>
+</html>
