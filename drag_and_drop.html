@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Selenium Drag and Drop Test</title>
+    <title>Drag and Drop Test</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -41,6 +41,20 @@
             text-align: center;
             min-height: 40px;
         }
+        #showResultBtn {
+            margin: 20px auto;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #2196F3;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: none;
+        }
+        #showResultBtn:hover {
+            background-color: #0b7dda;
+        }
         .instructions {
             margin-bottom: 20px;
             padding: 10px;
@@ -52,7 +66,9 @@
 <body>
     <div class="instructions">
         <h2>Drag and Drop Test</h2>
-        <p>Перетащите зеленый квадрат на красный. Результат появится только при выполнении через Selenium.</p>
+        <p>1. Перетащите зеленый квадрат на красный</p>
+        <p>2. После успешного перетаскивания появится кнопка</p>
+        <p>3. Нажмите кнопку, чтобы увидеть результат (работает только через Selenium)</p>
     </div>
     
     <div class="container">
@@ -64,13 +80,16 @@
         </div>
     </div>
     
+    <button id="showResultBtn">Показать результат</button>
     <div id="result"></div>
 
     <script>
         const draggable = document.getElementById('draggable');
         const droppable = document.getElementById('droppable');
+        const showResultBtn = document.getElementById('showResultBtn');
         const resultDiv = document.getElementById('result');
-
+        let isDropped = false;
+        
         draggable.addEventListener('dragstart', function(e) {
             e.dataTransfer.setData('text/plain', e.target.id);
             setTimeout(() => {
@@ -79,7 +98,9 @@
         });
         
         draggable.addEventListener('dragend', function(e) {
-            e.target.style.display = 'flex';
+            if (!isDropped) {
+                e.target.style.display = 'flex';
+            }
         });
         
         droppable.addEventListener('dragover', function(e) {
@@ -101,17 +122,30 @@
             
             const id = e.dataTransfer.getData('text/plain');
             const draggedElement = document.getElementById(id);
-  
-            if (navigator.webdriver) {
-                const randomNumber = Math.floor(Math.random() * 99) + 501;
-                resultDiv.textContent = `Результат: ${randomNumber}`;
-            } else {
-                resultDiv.textContent = 'Перетаскивание выполнено, но не через Selenium';
-            }
+            
+            isDropped = true;
+            
+            showResultBtn.style.display = 'block';
+            resultDiv.textContent = 'Перетаскивание успешно! Нажмите кнопку для результата';
 
             setTimeout(() => {
                 draggedElement.style.display = 'flex';
+                draggedElement.style.opacity = '0.5';
+                draggedElement.style.cursor = 'default';
+                draggedElement.draggable = false;
             }, 0);
+        });
+        
+        showResultBtn.addEventListener('click', function() {
+            if (navigator.webdriver || /HeadlessChrome/.test(navigator.userAgent)) {
+                const randomNumber = Math.floor(Math.random() * 99) + 501;
+                resultDiv.textContent = `Результат: ${randomNumber}`;
+            } else {
+                resultDiv.textContent = 'Кнопка нажата, но не через Selenium';
+            }
+
+            this.disabled = true;
+            this.style.backgroundColor = '#cccccc';
         });
     </script>
 </body>
