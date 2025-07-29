@@ -52,9 +52,6 @@
             cursor: pointer;
             display: none;
         }
-        #showResultBtn:hover {
-            background-color: #0b7dda;
-        }
         .instructions {
             margin-bottom: 20px;
             padding: 10px;
@@ -88,8 +85,11 @@
         const droppable = document.getElementById('droppable');
         const showResultBtn = document.getElementById('showResultBtn');
         const resultDiv = document.getElementById('result');
+        
+        // Переменная для отслеживания успешного перетаскивания
         let isDropped = false;
         
+        // Обработчики для draggable элемента
         draggable.addEventListener('dragstart', function(e) {
             e.dataTransfer.setData('text/plain', e.target.id);
             setTimeout(() => {
@@ -103,6 +103,7 @@
             }
         });
         
+        // Обработчики для droppable элемента
         droppable.addEventListener('dragover', function(e) {
             e.preventDefault();
         });
@@ -123,11 +124,14 @@
             const id = e.dataTransfer.getData('text/plain');
             const draggedElement = document.getElementById(id);
             
+            // Помечаем перетаскивание как успешное
             isDropped = true;
             
+            // Показываем кнопку
             showResultBtn.style.display = 'block';
             resultDiv.textContent = 'Перетаскивание успешно! Нажмите кнопку для результата';
-
+            
+            // Визуально показываем перемещение
             setTimeout(() => {
                 draggedElement.style.display = 'flex';
                 draggedElement.style.opacity = '0.5';
@@ -136,14 +140,21 @@
             }, 0);
         });
         
+        // Обработчик клика по кнопке
         showResultBtn.addEventListener('click', function() {
-            if (navigator.webdriver || /HeadlessChrome/.test(navigator.userAgent)) {
+            // Улучшенная проверка на Selenium
+            const isAutomated = navigator.webdriver || 
+                               /HeadlessChrome/.test(navigator.userAgent) ||
+                               window.callPhantom ||
+                               window._phantom;
+            
+            if (isAutomated) {
                 const randomNumber = Math.floor(Math.random() * 99) + 501;
                 resultDiv.textContent = `Результат: ${randomNumber}`;
             } else {
                 resultDiv.textContent = 'Кнопка нажата, но не через Selenium';
             }
-
+            
             this.disabled = true;
             this.style.backgroundColor = '#cccccc';
         });
