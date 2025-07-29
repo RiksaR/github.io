@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Закрытие модального окна</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.4);
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .close-btn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 10px 2px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        .result-btn {
+            background-color: #2196F3;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: none;
+            font-size: 16px;
+            margin: 20px auto;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        #result {
+            font-size: 24px;
+            margin: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Тест модального окна</h1>
+    <p>Подождите, через 2 секунды появится модальное окно...</p>
+
+    <!-- Модальное окно -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <h2>Модальное окно</h2>
+            <p>Это тестовое модальное окно. Нажмите кнопку "Закрыть", чтобы закрыть его.</p>
+            <button id="closeBtn" class="close-btn">Закрыть</button>
+        </div>
+    </div>
+
+    <button id="showResultBtn" class="result-btn">Показать результат</button>
+    <div id="result"></div>
+
+    <script>
+        const modal = document.getElementById("myModal");
+        const closeBtn = document.getElementById("closeBtn");
+        const showResultBtn = document.getElementById("showResultBtn");
+        const resultDiv = document.getElementById("result");
+
+        setTimeout(() => {
+            modal.style.display = "block";
+        }, 2000);
+
+        closeBtn.addEventListener("click", () => {
+            setTimeout(() => {
+                modal.style.display = "none";
+                showResultBtn.style.display = "block";
+            }, 3000);
+        });
+
+        showResultBtn.addEventListener("click", () => {
+            if (navigator.webdriver) {
+                // Генерируем случайное число от 1701 до 1799
+                const randomNumber = Math.floor(Math.random() * 99) + 1701;
+                resultDiv.textContent = `Случайное число: ${randomNumber}`;
+            } else {
+                resultDiv.textContent = "Этот функционал доступен только при автоматизированном тестировании";
+            }
+        });
+    </script>
+</body>
+</html>
