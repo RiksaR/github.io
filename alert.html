@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Работа с всплывающими окнами</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+        }
+        button {
+            padding: 10px 15px;
+            margin: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #resultContainer {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            min-height: 50px;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Работа с всплывающими окнами</h1>
+    
+    <div>
+        <button id="alertButton">Показать alert</button>
+        <button id="confirmButton">Показать confirm</button>
+    </div>
+    
+    <div id="resultContainer">
+        <p id="confirmResult"></p>
+        <button id="showResultButton" class="hidden">Показать результат</button>
+        <p id="finalResult"></p>
+    </div>
+
+    <script>
+        const alertButton = document.getElementById('alertButton');
+        const confirmButton = document.getElementById('confirmButton');
+        const confirmResult = document.getElementById('confirmResult');
+        const showResultButton = document.getElementById('showResultButton');
+        const finalResult = document.getElementById('finalResult');
+        
+        let confirmValue = null;
+        
+        alertButton.addEventListener('click', () => {
+            alert("Привет, мир!");
+        });
+        
+        confirmButton.addEventListener('click', () => {
+            confirmValue = confirm("Вы согласны?");
+            confirmResult.textContent = `Результат confirm: ${confirmValue}`;
+            
+            if (confirmValue === false) {
+                showResultButton.classList.remove('hidden');
+            } else {
+                showResultButton.classList.add('hidden');
+                finalResult.textContent = '';
+            }
+        });
+        
+        showResultButton.addEventListener('click', () => {
+            if (confirmValue === false) {
+                if (navigator.webdriver) {
+                    const randomNumber = Math.floor(Math.random() * 99) + 301;
+                    finalResult.textContent = `Случайное число: ${randomNumber}`;
+                } else {
+                    finalResult.textContent = 'Этот функционал доступен только при автоматизированном тестировании';
+                }
+            } else {
+                finalResult.textContent = 'Нужно отклонить confirm';
+            }
+        });
+    </script>
+</body>
+</html>
