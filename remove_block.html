@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Задание Selenium - Перекрытый элемент</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        
+        .task-description {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-left: 4px solid #007bff;
+            margin-bottom: 20px;
+        }
+        
+        .input-group {
+            margin: 20px 0;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: #0056b3;
+        }
+        
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1000;
+            background-color: transparent;
+            cursor: not-allowed;
+        }
+        
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Задание Selenium</h1>
+        
+        <div class="task-description">
+            <p><strong>Задача:</strong> Нажмите кнопку "Показать результат" и введите полученное число в поле ответа.</p>
+            <p><strong>Подсказка:</strong> Кнопка может быть временно недоступна для обычного клика.</p>
+        </div>
+        
+        <div class="input-group">
+            <label for="answer">Ответ:</label>
+            <input type="text" id="answer" placeholder="Введите ответ здесь...">
+        </div>
+        
+        <div style="position: relative;">
+            <button id="showResultBtn" onclick="showResult()">Показать результат</button>
+            <div id="overlay" class="overlay"></div>
+        </div>
+    </div>
+
+    <script>
+        function showResult() {
+            const randomNumber = Math.floor(Math.random() * 99) + 1001;
+            document.getElementById('answer').value = randomNumber;
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('overlay').style.display = 'block';
+        });
+    </script>
+</body>
+</html>
