@@ -13,10 +13,11 @@
         }
         
         .content {
-            height: 5000px;
+            min-height: 5000px;
             background: linear-gradient(to bottom, #e3f2fd, #bbdefb);
             padding: 20px;
             border-radius: 10px;
+            position: relative;
         }
         
         .instruction {
@@ -39,6 +40,7 @@
             left: 50%;
             transform: translateX(-50%);
             text-align: center;
+            width: 100%;
         }
         
         #showResult {
@@ -50,6 +52,7 @@
             font-size: 18px;
             cursor: pointer;
             transition: background-color 0.3s;
+            margin-top: 100px;
         }
         
         #showResult:hover {
@@ -74,6 +77,10 @@
             border-radius: 5px;
             display: none;
         }
+        
+        .spacer {
+            height: 3000px;
+        }
     </style>
 </head>
 <body>
@@ -87,6 +94,8 @@
         <h1>Прокрутите страницу вниз</h1>
         <p>Эта страница специально сделана очень длинной для демонстрации скроллинга в Selenium.</p>
         
+        <div class="spacer"></div>
+        
         <div class="button-container">
             <button id="showResult" onclick="showResultIfAutomated()">Показать результат</button>
             <div id="result"></div>
@@ -99,6 +108,7 @@
 
     <script>
         function showResultIfAutomated() {
+            // Проверяем, запущен ли браузер через Selenium
             if (navigator.webdriver) {
                 const randomNumber = Math.floor(Math.random() * 99) + 901;
                 document.getElementById('result').textContent = `Результат: ${randomNumber}`;
@@ -123,11 +133,13 @@
 
         window.onload = function() {
             const content = document.querySelector('.content');
-            for (let i = 0; i < 50; i++) {
+            const spacer = document.querySelector('.spacer');
+            
+            for (let i = 0; i < 30; i++) {
                 const p = document.createElement('p');
                 p.textContent = `Секция ${i + 1}: Прокрутите вниз чтобы увидеть кнопку...`;
                 p.style.margin = '50px 0';
-                content.insertBefore(p, document.querySelector('.button-container'));
+                content.insertBefore(p, spacer);
             }
         };
     </script>
