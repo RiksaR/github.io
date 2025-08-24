@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drag-and-Drop Библиотека</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .container {
+            display: flex;
+            gap: 50px;
+            margin-bottom: 30px;
+        }
+        .library, .bag {
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            padding: 20px;
+            min-height: 300px;
+            min-width: 200px;
+        }
+        .library {
+            background-color: #f0f8ff;
+        }
+        .bag {
+            background-color: #fff0f5;
+        }
+        .book {
+            padding: 10px;
+            margin: 8px 0;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: grab;
+            user-select: none;
+        }
+        .book:active {
+            cursor: grabbing;
+        }
+        .book.dragging {
+            opacity: 0.5;
+        }
+        .success {
+            color: green;
+            font-weight: bold;
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid green;
+            border-radius: 4px;
+            display: none;
+        }
+        h2 {
+            color: #333;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Drag-and-Drop Библиотека</h1>
+    <p>Перетащите все книги из библиотеки в сумку для чтения</p>
+    
+    <div class="container">
+        <div class="library">
+            <h2>Библиотека</h2>
+            <div class="book" draggable="true" data-book="1">Book 1</div>
+            <div class="book" draggable="true" data-book="2">Book 2</div>
+            <div class="book" draggable="true" data-book="3">Book 3</div>
+        </div>
+        
+        <div class="bag" id="readingBag" data-bag="">
+            <h2>Сумка для чтения</h2>
+        </div>
+    </div>
+    
+    <div id="result" class="success"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const books = document.querySelectorAll('.book');
+            const bag = document.getElementById('readingBag');
+            const resultDiv = document.getElementById('result');
+            
+            // Проверка на Selenium
+            function isSelenium() {
+                return navigator.webdriver === true;
+            }
+
+            function generateRandomNumber() {
+                return Math.floor(Math.random() * 99) + 1;
+            }
+
+            books.forEach(book => {
+                book.addEventListener('dragstart', function(e) {
+                    e.dataTransfer.setData('text/plain', book.getAttribute('data-book'));
+                    setTimeout(() => book.classList.add('dragging'), 0);
+                });
+                
+                book.addEventListener('dragend', function() {
+                    book.classList.remove('dragging');
+                });
+            });
+
+            bag.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                bag.style.backgroundColor = '#ffe6ee';
+            });
+            
+            bag.addEventListener('dragleave', function() {
+                bag.style.backgroundColor = '#fff0f5';
+            });
+            
+            bag.addEventListener('drop', function(e) {
+                e.preventDefault();
+                bag.style.backgroundColor = '#fff0f5';
+                
+                const bookId = e.dataTransfer.getData('text/plain');
+                const book = document.querySelector(`.book[data-book="${bookId}"]`);
+                
+                if (book) {
+                    bag.appendChild(book);
+                    book.style.margin = '8px 0';
+
+                    const remainingBooks = document.querySelectorAll('.library .book');
+                    if (remainingBooks.length === 0 && isSelenium()) {
+                        const randomNumber = generateRandomNumber();
+                        bag.setAttribute('data-bag', randomNumber);
+                        resultDiv.textContent = `Задание выполнено! Код: ${randomNumber}`;
+                        resultDiv.style.display = 'block';
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
